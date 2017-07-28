@@ -27,7 +27,7 @@
   sort($tsfiles);
 ?>
 
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -121,9 +121,23 @@
   update_last_frame_form_query(); // do this first so jquery finishes in time for set_frame
   toggle_view_panel("XY_uv_ground");
   toggle_view_panel("XY_int_lwp");
-  toggle_view_panel("XY_w_2km");
-  toggle_view_panel("XZ_int_cloud");
-  toggle_view_panel("XZ_int_rho_c");
+  // toggle_view_panel("XY_w_2km");
+  toggle_view_panel("XY_w_600m");
+  // toggle_view_panel("XZ_int_cloud");
+  // toggle_view_panel("XZ_int_rho_c");
+  // toggle_view_panel("XZ_int_rho_i");
+  // toggle_view_panel("XZ_int_rho_s");
+  // toggle_view_panel("XZ_int_rho_r");
+  toggle_view_panel("XZ_rho_c");
+  toggle_view_panel("XZ_rho_i");
+  toggle_view_panel("XZ_rho_s");
+  toggle_view_panel("XZ_rho_r");
+  toggle_view_panel("XZ_rho_v");
+  toggle_view_panel("XZ_n_c");
+  toggle_view_panel("XZ_n_i");
+  toggle_view_panel("XZ_n_s");
+  toggle_view_panel("XZ_n_r");
+  toggle_view_panel("XZ_n_d");
   toggle_view_panel("XZ_w");
   set_frame(0);
   setInterval("render()",100);
