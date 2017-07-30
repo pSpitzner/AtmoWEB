@@ -90,15 +90,17 @@ function render() {
 
 function update_last_frame_form_query() {
   // alert("oldframe: "+frame_index);
-  jQuery.get("./php/provide_img_index.php").done(function( data ) {
-    // alert("data: "+data);
-    // effectively calls set_dir()
-    // set_frame(data);
-    // alert(frame_index);
-    // document.getElementById("framecounter").innerHTML=data;
-    last_frame=Number(data);
-    if (stay_on_last_frame) set_frame(Number(data));
-  });
+  if (stay_on_last_frame) {
+    jQuery.get("./php/provide_img_index.php").done(function( data ) {
+      // alert("data: "+data);
+      // effectively calls set_dir()
+      // set_frame(data);
+      // alert(frame_index);
+      // document.getElementById("framecounter").innerHTML=data;
+      last_frame=Number(data);
+      set_frame(Number(data));
+    });
+}
   setTimeout(update_last_frame_form_query, 5000);
 }
 

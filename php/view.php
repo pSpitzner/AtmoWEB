@@ -47,6 +47,7 @@
         <button class="btn btn-default navbar-btn disabled" type="button">Count: <span id="framecounter" class="badge">4</span></button>
 
         <ul class="nav navbar-nav navbar-right">
+        <div style="float: right;">
         <div class="btn-group navbar-btn navbar-padlr">
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -60,7 +61,7 @@
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             VP <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu dropdown-right" role="menu">
             <?php
               for ($i=0; $i < count($vpsubdirs); $i++) echo '<li onclick="toggle_chart_panel(\''.$vpsubdirs[$i].'\', \'vp\');"><a class="clickable-list-item"><input id="'.$vpsubdirs[$i].'_vp_checkbox" type="checkbox" style="margin-right:12px">'.$vpsubdirs[$i].'</a></li>';
             ?>
@@ -76,6 +77,7 @@
             </ul>
           </div>
 
+        </div>
         </div>
         </ul>
 
@@ -122,22 +124,22 @@
   toggle_view_panel("XY_uv_ground");
   toggle_view_panel("XY_int_lwp");
   // toggle_view_panel("XY_w_2km");
-  toggle_view_panel("XY_w_600m");
+  // toggle_view_panel("XY_w_600m");
   // toggle_view_panel("XZ_int_cloud");
   // toggle_view_panel("XZ_int_rho_c");
   // toggle_view_panel("XZ_int_rho_i");
   // toggle_view_panel("XZ_int_rho_s");
   // toggle_view_panel("XZ_int_rho_r");
-  toggle_view_panel("XZ_rho_c");
-  toggle_view_panel("XZ_rho_i");
-  toggle_view_panel("XZ_rho_s");
-  toggle_view_panel("XZ_rho_r");
-  toggle_view_panel("XZ_rho_v");
-  toggle_view_panel("XZ_n_c");
-  toggle_view_panel("XZ_n_i");
-  toggle_view_panel("XZ_n_s");
-  toggle_view_panel("XZ_n_r");
-  toggle_view_panel("XZ_n_d");
+  // toggle_view_panel("XZ_rho_c");
+  // toggle_view_panel("XZ_rho_i");
+  // toggle_view_panel("XZ_rho_s");
+  // toggle_view_panel("XZ_rho_r");
+  // toggle_view_panel("XZ_rho_v");
+  // toggle_view_panel("XZ_n_c");
+  // toggle_view_panel("XZ_n_i");
+  // toggle_view_panel("XZ_n_s");
+  // toggle_view_panel("XZ_n_r");
+  // toggle_view_panel("XZ_n_d");
   toggle_view_panel("XZ_w");
   set_frame(0);
   setInterval("render()",100);

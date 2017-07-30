@@ -11,12 +11,12 @@ body {
   padding: 3px;
   border-bottom-right-radius: 2.5px;
   border-bottom-left-radius: 2.5px;
-  height: 320px;
+  height: 30vh;
 }
-.toggle-box {
-  /*this is not working, doesnt get respected, somehow*/
+/*.toggle-box {
+  this is not working, doesnt get respected, somehow
   margin-right: 12px;
-}
+}*/
 .clickable-list-item {
   cursor:pointer;
 }
@@ -27,9 +27,6 @@ body {
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
     position: static;
-    float: none;
-    width: auto;
-    margin-top: 0;
     background-color: red;
     border: 0;
     -webkit-box-shadow: none;

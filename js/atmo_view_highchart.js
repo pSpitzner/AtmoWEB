@@ -16,7 +16,6 @@ function chartpanel(toggle_id, type) {
   this.dt = 1;
   this.last_available = 0;
   this.last_loaded = 0;
-  this.all_loaded = 0;
   this.loading = false;
   this.source = new Array();
 }
@@ -199,37 +198,23 @@ chartpanel.prototype.append_new_data_and_redraw = function() {
   self.loading = true;
   var querytarget;
   if (self.type == 'vp') {
-    for (var target_index = self.last_loaded; target_index <= self.last_available; target_index++) {
-      if (self.type == 'vp') querytarget = "./php/provide_vp_data.php?f="+self.toggle_id+"&i="+pad(target_index,5);
-      jQuery.getJSON(querytarget, function( data ) {
-        // this is asynchroneous!
-        var newdata_height = new Array();
-        var newdata_val = new Array();
-        var time;
+    querytarget = "./php/provide_vp_data.php?f="+self.toggle_id+"&i="+self.last_loaded+"&l="+self.last_available;
+    jQuery.getJSON(querytarget, function( data ) {
+      // this is asynchroneous!
+      var newdata_height = new Array();
+      var newdata_val = new Array();
+      var time;
 
-        self.all_loaded += 1;
-        $.each( data, function(key, entry ) {
-          newdata_height.push(Number(entry.h));
-          newdata_val.push(Number(entry.val));
-          time = Number(entry.t);
-        })
-        time *= 1000;
+      $.each( data, function(key, entry ) {
+        var temp = [Number(entry.t)*1000, Number(entry.h), Number(entry.val)];
+        self.source.push(temp);
+      })
 
-        for (var i = 0; i < newdata_val.length; i++) {
-          var temp = [time, newdata_height[i], newdata_val[i]];
-          self.source.push(temp);
-        }
-
-        // only reload after final read
-        if (self.all_loaded == self.last_available+1) {
-          self.last_loaded = self.last_available;
-          self.all_loaded = self.last_available;
-          self.chart.series[0].setData(self.source,true,true,true);
-          // self.chart.redraw(true);
-          self.loading = false;
-        }
-      });
-    }
+      self.last_loaded = self.last_available;
+      self.chart.series[0].setData(self.source,true,true,true);
+      // self.chart.redraw(true);
+      self.loading = false;
+    });
   } else if (self.type == 'ts') {
     querytarget = "./php/provide_ts_data.php?f="+self.toggle_id+"&l="+self.last_loaded;
     jQuery.getJSON(querytarget, function( data ) {
