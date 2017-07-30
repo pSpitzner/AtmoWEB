@@ -16,4 +16,4 @@ Adjust the configuration file so that it finds the output from AtmoCL:
 ```
 vi AtmoWEB/php/config.php
 ```
-Make sure that the webserver has the correct access rights. You may also link the AtmoCL output folder to have the model dump its data in place that is suitable for your webserver.
+Make sure that the webserver has the correct access rights. You may also link the AtmoCL output folder to have the model dump its data in a place that is suitable for your webserver.
