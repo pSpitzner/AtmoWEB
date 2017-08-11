@@ -174,7 +174,7 @@ chartpanel.prototype.init_variables_from_source_format = function() {
 chartpanel.prototype.update_last_source_entry_form_query = function() {
   var self = this;
   if (self.type == 'vp') {
-    jQuery.get("./php/provide_vp_index.php").done(function( data ) {
+    jQuery.get("./php/provide_vp_index.php?f="+self.toggle_id).done(function( data ) {
       if (self.last_available!=Number(data)) {
         self.last_available=Number(data);
         self.chart.xAxis[0].setExtremes(0, self.last_available*self.dt*1000);

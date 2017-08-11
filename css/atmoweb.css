@@ -11,7 +11,8 @@ body {
   padding: 3px;
   border-bottom-right-radius: 2.5px;
   border-bottom-left-radius: 2.5px;
-  height: 30vh;
+  /*height: 30vh;*/
+  height: 300px;
 }
 /*.toggle-box {
   this is not working, doesnt get respected, somehow
