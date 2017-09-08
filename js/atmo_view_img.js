@@ -152,10 +152,18 @@ function keyhandler(keyEv) {
   }
   //alert("Taste mit Dezimalwert "+keyCode+" gedr&uuml;ckt.");
   // arrows
-  if(keyCode==39){next_frame();}
-  if(keyCode==37){back_frame();}
-  if(keyCode==38){set_frame(0);}
-  if(keyCode==40){set_frame(last_frame);}
+  if(keyCode==39){
+    next_frame();
+    keyEv.preventDefault();}
+  if(keyCode==37){
+    back_frame();
+    keyEv.preventDefault();}
+  if(keyCode==38){
+    set_frame(0);
+    keyEv.preventDefault();}
+  if(keyCode==40){
+    set_frame(last_frame);
+    keyEv.preventDefault();}
   // space to play
   if(keyCode==32){
     play();

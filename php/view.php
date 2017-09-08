@@ -121,6 +121,7 @@
 <script src="./js/atmo_view_img.js"></script>
 <script>
   update_last_frame_form_query(); // do this first so jquery finishes in time for set_frame
+  // toggle_view_panel("contactprocess");
   toggle_view_panel("XY_uv_ground");
   toggle_view_panel("XY_int_lwp");
   // toggle_view_panel("XY_w_2km");
@@ -154,7 +155,7 @@
 <script src="./js/atmo_view_highchart.js"></script>
 <!-- <script src="./js/atmo_view_ts.js"></script> -->
 <script>
-toggle_chart_panel("VP_ql", "vp");
-toggle_chart_panel("XZ_int_rho_c", "ts");
+// toggle_chart_panel("VP_ql", "vp");
+// toggle_chart_panel("XZ_int_rho_c", "ts");
 </script>
 
