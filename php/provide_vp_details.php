@@ -9,8 +9,9 @@
 
   // needs to be zero padded :/
   $target_index = $_REQUEST["i"];
+  $src_arg = $_REQUEST["src"];
 
-  $file=$atmocl_dir."/verticalprofiles/".$file."/".$target_index.".vp";
+  $file=$atmocl_dir.$src_arg."/verticalprofiles/".$file."/".$target_index.".vp";
   $data=array();
 
   $dm=1.0;

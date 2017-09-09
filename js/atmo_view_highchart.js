@@ -156,14 +156,14 @@ chartpanel.prototype.init_chart = function() {
 chartpanel.prototype.init_variables_from_source_format = function() {
   var self = this;
   if (self.type == 'vp') {
-    jQuery.getJSON("./php/provide_vp_details.php?f="+this.toggle_id+"&i="+pad(0,5), function( data ) {
+    jQuery.getJSON("./php/provide_vp_details.php?src="+src_arg+"&f="+this.toggle_id+"&i="+pad(0,5), function( data ) {
       self.dt=(Number(data.dt));
       self.dm=(Number(data.dm));
       self.init_chart();
       self.update_last_source_entry_form_query();
     });
   } else if (self.type == 'ts') {
-    jQuery.getJSON("./php/provide_ts_details.php?f="+this.toggle_id, function( data ) {
+    jQuery.getJSON("./php/provide_ts_details.php?src="+src_arg+"&f="+this.toggle_id, function( data ) {
       self.dt=(Number(data.dt));
       self.init_chart();
       self.update_last_source_entry_form_query();
@@ -174,7 +174,7 @@ chartpanel.prototype.init_variables_from_source_format = function() {
 chartpanel.prototype.update_last_source_entry_form_query = function() {
   var self = this;
   if (self.type == 'vp') {
-    jQuery.get("./php/provide_vp_index.php?f="+self.toggle_id).done(function( data ) {
+    jQuery.get("./php/provide_vp_index.php?src="+src_arg+"&f="+self.toggle_id).done(function( data ) {
       if (self.last_available!=Number(data)) {
         self.last_available=Number(data);
         self.chart.xAxis[0].setExtremes(0, self.last_available*self.dt*1000);
@@ -182,7 +182,7 @@ chartpanel.prototype.update_last_source_entry_form_query = function() {
       }
     });
   } else if (self.type == 'ts') {
-      jQuery.get("./php/provide_ts_index.php?f="+self.toggle_id).done(function( data ) {
+      jQuery.get("./php/provide_ts_index.php?src="+src_arg+"&f="+self.toggle_id).done(function( data ) {
       if (self.last_available!=Number(data)) {
         self.last_available=Number(data);
         self.chart.xAxis[0].setExtremes(0, self.last_available*self.dt*1000);
@@ -198,7 +198,7 @@ chartpanel.prototype.append_new_data_and_redraw = function() {
   self.loading = true;
   var querytarget;
   if (self.type == 'vp') {
-    querytarget = "./php/provide_vp_data.php?f="+self.toggle_id+"&i="+self.last_loaded+"&l="+self.last_available;
+    querytarget = "./php/provide_vp_data.php?src="+src_arg+"&f="+self.toggle_id+"&i="+self.last_loaded+"&l="+self.last_available;
     jQuery.getJSON(querytarget, function( data ) {
       // this is asynchroneous!
       var newdata_height = new Array();
@@ -216,7 +216,7 @@ chartpanel.prototype.append_new_data_and_redraw = function() {
       self.loading = false;
     });
   } else if (self.type == 'ts') {
-    querytarget = "./php/provide_ts_data.php?f="+self.toggle_id+"&l="+self.last_loaded;
+    querytarget = "./php/provide_ts_data.php?src="+src_arg+"&f="+self.toggle_id+"&l="+self.last_loaded;
     jQuery.getJSON(querytarget, function( data ) {
       // this is asynchroneous!
       var val;
@@ -278,7 +278,7 @@ function toggle_chart_panel(toggle_id, type) {
   } else {
     var panel = document.createElement('div');
     panel.id = panel_id;
-    panel.className = 'col-md-6';
+    panel.className = 'col-md-6 half-padding';
     panel.innerHTML = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+toggle_id+'</h3></div><div id="'+content_id+'" class="panel-body-vp"></div></div>';
     var tabview = document.getElementById('table_view_highcharts');
     tabview.appendChild(panel);

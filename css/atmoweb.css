@@ -2,6 +2,10 @@
 body {
   padding-top: 60px;
 }
+.half-padding{
+  padding-left:7px ! important;
+  padding-right:7px ! important;
+}
 .panel-body-img {
   /*padding: 1px;*/
   border-bottom-right-radius: 2.5px;
@@ -22,18 +26,34 @@ body {
 .clickable-list-item {
   cursor:pointer;
 }
-.navbar-padlr {
-   margin-left: 15px;
-   margin-right: 15px;
+.navbar-padr {
+  margin-left: 0px;
+  margin-right: 15px;
 }
+.navbar-padlr {
+    margin-left: 0px;
+    margin-right: 4px;
+  }
 @media (max-width: 767px) {
+  .navbar-padr {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .navbar-padlr {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+/*@media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
     position: static;
     background-color: red;
     border: 0;
     -webkit-box-shadow: none;
             box-shadow: none;
-  }
+  }*/
+
 /*fix navbar toggle, hover breaks things on mobile*/
 /*.navbar-default .navbar-toggle {
     background-color: #ddd;

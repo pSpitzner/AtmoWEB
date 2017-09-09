@@ -43,9 +43,9 @@ function set_frame(i) {
   for (v=0;v<panels.length;v++) {
     frame_index = pbc(i);
     var toggle_id = panels[v];
-    document.getElementById(toggle_id+'_img_image').src="./php/image.php?n="+toggle_id+"&f="+pbc(frame_index);
-    upnext[v].src="./php/image.php?n="+toggle_id+"&f="+pbc(frame_index+1);
-    upback[v].src="./php/image.php?n="+toggle_id+"&f="+pbc(frame_index-1);
+    document.getElementById(toggle_id+'_img_image').src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index);
+    upnext[v].src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index+1);
+    upback[v].src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index-1);
   }
   document.getElementById("framecounter").innerHTML=frame_index;
 }
@@ -90,7 +90,7 @@ function render() {
 
 
 function update_last_frame_form_query() {
-  jQuery.get("./php/provide_img_index.php").done(function( data ) {
+  jQuery.get("./php/provide_img_index.php?src="+src_arg).done(function( data ) {
     last_frame=Number(data);
     if (stay_on_last_frame) {
       set_frame(Number(data));
@@ -127,7 +127,7 @@ function toggle_view_panel(toggle_id) {
     var panel = document.createElement('div');
 
     panel.id = panel_id;
-    panel.className = 'col-sm-6 col-lg-4';
+    panel.className = 'col-sm-6 col-lg-4 half-padding';
     panel.innerHTML = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+toggle_id+'</h3></div><img src="img/00001.png" id="'+image_id+'" alt="img" class="img-responsive panel-body-img" width="100%"></div>';
     var tabview = document.getElementById('table_view_images');
     tabview.appendChild(panel);

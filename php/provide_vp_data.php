@@ -7,11 +7,12 @@
   $file = $_REQUEST["f"];
   $init = $_REQUEST["i"];
   $last = $_REQUEST["l"];
+  $src_arg = $_REQUEST["src"];
 
   $data=array();
   for ($i=$init; $i <= $last; $i++) {
     $target_index = str_pad($i, 5, "0", STR_PAD_LEFT);
-    $target_file =  $atmocl_dir."verticalprofiles/".$file."/".$target_index.".vp";
+    $target_file =  $atmocl_dir.$src_arg."/verticalprofiles/".$file."/".$target_index.".vp";
     // echo $target_file;
 
     $dm=1.0;

@@ -1,18 +1,30 @@
 <?php
-  // include("config.php");
+  include("config.php");
+
+  chdir($atmocl_dir);
+  $src_arg = glob('*' , GLOB_ONLYDIR)[0];
+  if (!$src_arg) {
+    echo 'No input folder present, aborting';
+    return;
+  }
+
+  // load possible input argument
+  if (isset($_REQUEST["src"])) $src_arg = $_REQUEST["src"];
+  chdir($atmocl_dir);
+  $src_subdirs = glob('*' , GLOB_ONLYDIR);
 
   // load images
-  $imagedir=$atmocl_dir."img/";
+  $imagedir=$atmocl_dir.$src_arg."/img/";
   chdir($imagedir);
   $imagesubdirs = glob('*' , GLOB_ONLYDIR);
 
   // load verticalprofiles
-  $vpdir = $atmocl_dir."/verticalprofiles/";
+  $vpdir = $atmocl_dir.$src_arg."/verticalprofiles/";
   chdir($vpdir);
   $vpsubdirs = glob('*', GLOB_ONLYDIR);
 
   // load timeseries
-  $tsdir = $atmocl_dir."/timeseries/";
+  $tsdir = $atmocl_dir.$src_arg."/timeseries/";
   $fileformat = ".ts";
   if (!file_exists($tsdir)) exit();
   $tsfiles=array();
@@ -41,12 +53,78 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
+    <!-- controls -->
     <div class="collapse navbar-collapse" id="navbar_collapse_content">
-        <button id="button_refresh" class="btn btn-default navbar-btn" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-        <button id="button_play" class="btn btn-default navbar-btn" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></button>
-        <button class="btn btn-default navbar-btn disabled" type="button">Count: <span id="framecounter" class="badge">4</span></button>
-
         <ul class="nav navbar-nav navbar-right">
+          <div class="btn-group navbar-btn navbar-padr">
+            <button id="button_refresh" class="btn btn-default" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+            <button id="button_play" class="btn btn-default" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></button>
+            <button class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge">0</span></button>
+          </div>
+        </ul>
+
+        <!-- input src -->
+        <ul class="nav navbar-nav navbar-right">
+          <div class="btn-group navbar-btn navbar-padlr">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Input <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <?php
+                  for ($i=0;$i<count($src_subdirs);$i++) {
+                    if ($src_arg == $src_subdirs[$i]) echo '<li class="active"><a class="clickable-list-item">'.$src_subdirs[$i].'</a></li>';
+                    else echo '<li class=""><a class="clickable-list-item" href="?src='.$src_subdirs[$i].'">'.$src_subdirs[$i].'</a></li>';
+                  }
+                ?>
+              </ul>
+            </div>
+          </div>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-left">
+          <div class="btn-group navbar-btn navbar-padlr">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Images <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <?php
+                  for ($i=0;$i<count($imagesubdirs);$i++) echo '<li onclick="toggle_view_panel(\''.$imagesubdirs[$i].'\');"><a class="clickable-list-item"><input id="'.$imagesubdirs[$i].'_img_checkbox" type="checkbox" style="margin-right:12px">'.$imagesubdirs[$i].'</a></li>';
+                ?>
+              </ul>
+            </div>
+          </div>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-left">
+          <div class="btn-group navbar-btn navbar-padlr">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              VP <span class="caret"></span></button>
+              <ul class="dropdown-menu dropdown-right" role="menu">
+              <?php
+                for ($i=0; $i < count($vpsubdirs); $i++) echo '<li onclick="toggle_chart_panel(\''.$vpsubdirs[$i].'\', \'vp\');"><a class="clickable-list-item"><input id="'.$vpsubdirs[$i].'_vp_checkbox" type="checkbox" style="margin-right:12px">'.$vpsubdirs[$i].'</a></li>';
+              ?>
+              </ul>
+            </div>
+          </div>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-left">
+          <div class="btn-group navbar-btn navbar-padlr">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              TS <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <?php
+                for ($i=0; $i < count($tsfiles); $i++) echo '<li onclick="toggle_chart_panel(\''.$tsfiles[$i].'\', \'ts\');"><a class="clickable-list-item"><input id="'.$tsfiles[$i].'_ts_checkbox" type="checkbox" style="margin-right:12px">'.$tsfiles[$i].'</a></li>';
+                ?>
+              </ul>
+            </div>
+          </div>
+        </ul>
+
+        <!-- grouping buttons causes alignement bug on mobile -->
+        <!-- <ul class="nav navbar-nav navbar-right">
         <div style="float: right;">
         <div class="btn-group navbar-btn navbar-padlr">
           <div class="btn-group">
@@ -79,14 +157,14 @@
 
         </div>
         </div>
-        </ul>
+        </ul> -->
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
 
 <!-- main -->
-<div class="container-fluid">
+<div class="container-fluid half-padding">
 
   <div class="col-md-12">
     <div class="row" id="table_view_images">
@@ -118,6 +196,8 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="./js/ie10-viewport-bug-workaround.js"></script>
 
+<!-- need to set this variable, to call the right getter from javascript :/ -->
+<script>var src_arg = "<?php Print($src_arg); ?>";</script>
 <script src="./js/atmo_view_img.js"></script>
 <script>
   update_last_frame_form_query(); // do this first so jquery finishes in time for set_frame

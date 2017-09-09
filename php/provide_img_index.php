@@ -1,6 +1,7 @@
 <?php
   include("config.php");
-  $dir=$atmocl_dir."/img/";
+  $src_arg = $_REQUEST["src"];
+  $dir=$atmocl_dir.$src_arg."/img/";
   $fileformat=".png";
   chdir($dir);
   $subdirs = glob('*' , GLOB_ONLYDIR);

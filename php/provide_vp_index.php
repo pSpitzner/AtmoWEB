@@ -9,8 +9,9 @@
   $frames=array();
   $fileformat=".vp";
   $file = $_REQUEST["f"];
+  $src_arg = $_REQUEST["src"];
 
-      $handle=opendir($atmocl_dir."/verticalprofiles/".$file."/");
+      $handle=opendir($atmocl_dir.$src_arg."/verticalprofiles/".$file."/");
       while (false !== ($entry = readdir($handle))) {
         if(strpos($entry, $fileformat) !== false) array_push($frames, $entry);
       }
