@@ -21,8 +21,8 @@
   if (count($src_subdirs) == 0) {
     echo 'No input folder present, aborting';
     exit;
-  } elseif (count($src_subdirs) == 1) $src_is_valid = false;
-  if (!$src_is_valid) {
+  }
+  if (!$src_is_valid || count($src_subdirs) == 1 && !isset($_REQUEST["src"])) {
     echo '<script type="text/javascript">
             window.location = "?src='.$src_subdirs[0].'"
           </script>';

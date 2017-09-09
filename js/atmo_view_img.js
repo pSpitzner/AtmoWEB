@@ -101,7 +101,7 @@ function update_last_frame_form_query() {
 
 function set_source(toggle_id) {
   var img = document.getElementById(toggle_id+'_img_image');
-  img.src="./php/image.php?n="+toggle_id+"&f="+frame_index;
+  img.src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+frame_index;
   // document.getElementById("dirselecta"+panel_id).blur();
 }
 
@@ -128,7 +128,7 @@ function toggle_view_panel(toggle_id) {
 
     panel.id = panel_id;
     panel.className = 'col-sm-6 col-lg-4 half-padding';
-    panel.innerHTML = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+toggle_id+'</h3></div><img src="img/00001.png" id="'+image_id+'" alt="img" class="img-responsive panel-body-img" width="100%"></div>';
+    panel.innerHTML = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+toggle_id+'</h3></div><img src="'+src_arg+'img/00001.png" id="'+image_id+'" alt="img" class="img-responsive panel-body-img" width="100%"></div>';
     var tabview = document.getElementById('table_view_images');
     tabview.appendChild(panel);
     set_source(toggle_id);
