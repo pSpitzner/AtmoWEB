@@ -1,42 +1,64 @@
 <?php
   include("config.php");
 
-  chdir($atmocl_dir);
-  $src_arg = glob('*' , GLOB_ONLYDIR)[0];
-  if (!$src_arg) {
-    echo 'No input folder present, aborting';
-    return;
+  if (!file_exists($atmocl_dir)) {
+    echo 'Incorrect folder specified in config';
+    exit;
   }
 
+  // chdir($atmocl_dir);
+  // $src_arg = glob('*' , GLOB_ONLYDIR)[0];
+
+
+  $src_is_valid = false;
   // load possible input argument
   if (isset($_REQUEST["src"])) $src_arg = $_REQUEST["src"];
   chdir($atmocl_dir);
   $src_subdirs = glob('*' , GLOB_ONLYDIR);
-
-  // load images
-  $imagedir=$atmocl_dir.$src_arg."/img/";
-  chdir($imagedir);
-  $imagesubdirs = glob('*' , GLOB_ONLYDIR);
-
-  // load verticalprofiles
-  $vpdir = $atmocl_dir.$src_arg."/verticalprofiles/";
-  chdir($vpdir);
-  $vpsubdirs = glob('*', GLOB_ONLYDIR);
-
-  // load timeseries
-  $tsdir = $atmocl_dir.$src_arg."/timeseries/";
-  $fileformat = ".ts";
-  if (!file_exists($tsdir)) exit();
-  $tsfiles=array();
-  $handle=opendir($tsdir);
-  while (false !== ($entry = readdir($handle))) {
-        if(strpos($entry, $fileformat) !== false) {
-          // array_push($tsfiles,      $entry);
-          array_push($tsfiles, substr($entry, 0,-strlen($fileformat)));
-        }
+  for ($i=0; $i < count($src_subdirs); $i++) {
+    if ($src_arg == $src_subdirs[$i]) $src_is_valid = true;
   }
-  closedir($handle);
-  sort($tsfiles);
+  if (count($src_subdirs) == 0) {
+    echo 'No input folder present, aborting';
+    exit;
+  } elseif (count($src_subdirs) == 1) $src_is_valid = false;
+  if (!$src_is_valid) {
+    echo '<script type="text/javascript">
+            window.location = "?src='.$src_subdirs[0].'"
+          </script>';
+    exit;
+  }
+
+  // content sub directories
+  $imagedir=$atmocl_dir.$src_arg."/img/";
+  $vpdir = $atmocl_dir.$src_arg."/verticalprofiles/";
+  $tsdir = $atmocl_dir.$src_arg."/timeseries/";
+
+  if (!file_exists($imagedir) || !file_exists($vpdir) || !file_exists($tsdir)) {
+    echo 'Content folder missing (ts, vp or img)';
+    // recycle src is valid variable
+    $src_is_valid = false;
+  } else {
+    chdir($imagedir);
+    $imagesubdirs = glob('*' , GLOB_ONLYDIR);
+
+    chdir($vpdir);
+    $vpsubdirs = glob('*', GLOB_ONLYDIR);
+
+    // load timeseries
+    $fileformat = ".ts";
+    if (!file_exists($tsdir)) exit();
+    $tsfiles=array();
+    $handle=opendir($tsdir);
+    while (false !== ($entry = readdir($handle))) {
+          if(strpos($entry, $fileformat) !== false) {
+            // array_push($tsfiles,      $entry);
+            array_push($tsfiles, substr($entry, 0,-strlen($fileformat)));
+          }
+    }
+    closedir($handle);
+    sort($tsfiles);
+  }
 ?>
 
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -49,7 +71,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">AtmoWEB</a>
+      <a class="navbar-brand" href="">AtmoWEB</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -68,13 +90,16 @@
           <div class="btn-group navbar-btn navbar-padlr">
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              Input <span class="caret"></span></button>
+              <?php
+              echo $src_arg;
+              ?>
+              <span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu">
                 <?php
                   for ($i=0;$i<count($src_subdirs);$i++) {
-                    if ($src_arg == $src_subdirs[$i]) echo '<li class="active"><a class="clickable-list-item">'.$src_subdirs[$i].'</a></li>';
-                    else echo '<li class=""><a class="clickable-list-item" href="?src='.$src_subdirs[$i].'">'.$src_subdirs[$i].'</a></li>';
+                    if ($src_arg != $src_subdirs[$i]) echo '<li class=""><a class="clickable-list-item" href="?src='.$src_subdirs[$i].'">'.$src_subdirs[$i].'</a></li>';
                   }
+                  if (count($src_subdirs)==1) echo '<li class="disabled"><a class="clickable-list-item" href="">No other input available</a></li>';
                 ?>
               </ul>
             </div>
@@ -195,6 +220,11 @@
 <script src="./js/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="./js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- dont launch further scripts if no content available, but render nav bar nonetheless -->
+<?php
+if (!$src_is_valid) exit;
+?>
 
 <!-- need to set this variable, to call the right getter from javascript :/ -->
 <script>var src_arg = "<?php Print($src_arg); ?>";</script>
