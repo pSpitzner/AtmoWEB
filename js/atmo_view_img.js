@@ -25,15 +25,16 @@ $(window).load(function () {
 var panels = new Array(); // contains toggle_ids, not panel_ids
 var upnext = new Array();
 var upback = new Array();
-var frame_index=0;
-var last_frame=0;
+var frame_index=-1;
+var last_frame=-1;
 var playing=0;
 var stay_on_last_frame=false;
 
 function pbc(i) {
   var j=0;
   if (i<=last_frame && i>=0) j=i;
-  else if (i<0) j = last_frame + i%last_frame +1;
+  else if (i<0 && last_frame != 0) j = last_frame + i%last_frame +1;
+  else if (last_frame==0) j=0;
   else j = -1 + i%last_frame;
   // console.log(j+" "+i+" / "+last_frame);
   return j;
@@ -41,13 +42,22 @@ function pbc(i) {
 
 function set_frame(i) {
   for (v=0;v<panels.length;v++) {
-    frame_index = pbc(i);
-    var toggle_id = panels[v];
-    document.getElementById(toggle_id+'_img_image').src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index);
-    upnext[v].src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index+1);
-    upback[v].src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index-1);
+    if (last_frame != -1) {
+      var toggle_id = panels[v];
+      frame_index = pbc(i);
+      document.getElementById(toggle_id+'_img_image').src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index);
+      if (last_frame > 0) {
+        upnext[v].src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index+1);
+        upback[v].src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+pbc(frame_index-1);
+      }
+      document.getElementById("framecounter").innerHTML=frame_index;
+    } else {
+      var toggle_id = panels[v];
+      frame_index = -1;
+      document.getElementById(toggle_id+'_img_image').src="./php/image.php?src="+src_arg+"&n="+toggle_id+"&f="+frame_index;
+      document.getElementById("framecounter").innerHTML="loading...";
+    }
   }
-  document.getElementById("framecounter").innerHTML=frame_index;
 }
 
 function next_frame() {
@@ -93,7 +103,7 @@ function update_last_frame_form_query() {
   jQuery.get("./php/provide_img_index.php?src="+src_arg).done(function( data ) {
     last_frame=Number(data);
     if (stay_on_last_frame) {
-      set_frame(Number(data));
+      set_frame(last_frame);
     }
   });
   setTimeout(update_last_frame_form_query, 5000);
@@ -138,6 +148,17 @@ function toggle_view_panel(toggle_id) {
   var cb = document.getElementById(toggle_id+'_img_checkbox');
   cb.checked=panel_exists(toggle_id);
   cb.blur();
+}
+
+function init_img_view() {
+  setInterval("render()",100);
+  update_last_frame_form_query();
+  set_frame(-1);
+  // manually get last frame
+  jQuery.get("./php/provide_img_index.php?src="+src_arg).done(function( data ) {
+    last_frame=Number(data);
+    set_frame(last_frame);
+  });
 }
 
 function keyhandler(keyEv) {

@@ -33,20 +33,25 @@
   $vpdir = $atmocl_dir.$src_arg."/verticalprofiles/";
   $tsdir = $atmocl_dir.$src_arg."/timeseries/";
 
-  if (!file_exists($imagedir) || !file_exists($vpdir) || !file_exists($tsdir)) {
-    echo 'Content folder missing (ts, vp or img)';
+  if (!file_exists($imagedir)) {
+    echo 'Content folder missing (img)';
     // recycle src is valid variable
     $src_is_valid = false;
   } else {
     chdir($imagedir);
     $imagesubdirs = glob('*' , GLOB_ONLYDIR);
+  }
 
+  if (file_exists($vpdir)) {
     chdir($vpdir);
     $vpsubdirs = glob('*', GLOB_ONLYDIR);
+  } else {
+    $vpsubdirs = [];
+  }
 
+  if (file_exists($tsdir)) {
     // load timeseries
     $fileformat = ".ts";
-    if (!file_exists($tsdir)) exit();
     $tsfiles=array();
     $handle=opendir($tsdir);
     while (false !== ($entry = readdir($handle))) {
@@ -57,6 +62,8 @@
     }
     closedir($handle);
     sort($tsfiles);
+  } else {
+    $tsfiles=[];
   }
 
   // set tab title
@@ -162,42 +169,6 @@
           </div>
         </ul>
 
-        <!-- grouping buttons causes alignement bug on mobile -->
-        <!-- <ul class="nav navbar-nav navbar-right">
-        <div style="float: right;">
-        <div class="btn-group navbar-btn navbar-padlr">
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Images <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu">
-              <?php
-                for ($i=0;$i<count($imagesubdirs);$i++) echo '<li onclick="toggle_view_panel(\''.$imagesubdirs[$i].'\');"><a class="clickable-list-item"><input id="'.$imagesubdirs[$i].'_img_checkbox" type="checkbox" style="margin-right:12px">'.$imagesubdirs[$i].'</a></li>';
-              ?>
-            </ul>
-          </div>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            VP <span class="caret"></span></button>
-            <ul class="dropdown-menu dropdown-right" role="menu">
-            <?php
-              for ($i=0; $i < count($vpsubdirs); $i++) echo '<li onclick="toggle_chart_panel(\''.$vpsubdirs[$i].'\', \'vp\');"><a class="clickable-list-item"><input id="'.$vpsubdirs[$i].'_vp_checkbox" type="checkbox" style="margin-right:12px">'.$vpsubdirs[$i].'</a></li>';
-            ?>
-            </ul>
-          </div>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            TS <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu">
-              <?php
-              for ($i=0; $i < count($tsfiles); $i++) echo '<li onclick="toggle_chart_panel(\''.$tsfiles[$i].'\', \'ts\');"><a class="clickable-list-item"><input id="'.$tsfiles[$i].'_ts_checkbox" type="checkbox" style="margin-right:12px">'.$tsfiles[$i].'</a></li>';
-              ?>
-            </ul>
-          </div>
-
-        </div>
-        </div>
-        </ul> -->
-
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
@@ -244,30 +215,10 @@ if (!$src_is_valid) exit;
 <script>var src_arg = "<?php Print($src_arg); ?>";</script>
 <script src="./js/atmo_view_img.js"></script>
 <script>
-  update_last_frame_form_query(); // do this first so jquery finishes in time for set_frame
-  // toggle_view_panel("contactprocess");
-  toggle_view_panel("XY_uv_ground");
-  toggle_view_panel("XY_int_lwp");
-  // toggle_view_panel("XY_w_2km");
-  // toggle_view_panel("XY_w_600m");
-  // toggle_view_panel("XZ_int_cloud");
-  // toggle_view_panel("XZ_int_rho_c");
-  // toggle_view_panel("XZ_int_rho_i");
-  // toggle_view_panel("XZ_int_rho_s");
-  // toggle_view_panel("XZ_int_rho_r");
-  // toggle_view_panel("XZ_rho_c");
-  // toggle_view_panel("XZ_rho_i");
-  // toggle_view_panel("XZ_rho_s");
-  // toggle_view_panel("XZ_rho_r");
-  // toggle_view_panel("XZ_rho_v");
-  // toggle_view_panel("XZ_n_c");
-  // toggle_view_panel("XZ_n_i");
-  // toggle_view_panel("XZ_n_s");
-  // toggle_view_panel("XZ_n_r");
-  // toggle_view_panel("XZ_n_d");
-  toggle_view_panel("XZ_w");
-  set_frame(0);
-  setInterval("render()",100);
+  init_img_view();
+  <?php
+   if (count($imagesubdirs)>0) echo "toggle_view_panel(\"".$imagesubdirs[0]."\");";
+  ?>
 </script>
 
 <!-- highchart -->
