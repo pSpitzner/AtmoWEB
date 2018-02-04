@@ -158,6 +158,7 @@ function init_img_view() {
   jQuery.get("./php/provide_img_index.php?src="+src_arg).done(function( data ) {
     last_frame=Number(data);
     if (last_frame>=0) set_frame(0);
+    else set_frame(-1);
   });
 }
 

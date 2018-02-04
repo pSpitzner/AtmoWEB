@@ -75,7 +75,7 @@ chartpanel.prototype.init_chart = function() {
           labels: {
               format: '{value}',
               formatter: function() {
-                return this.value.toExponential(1); // 2 digits of precision
+                return this.value.toExponential(2); // 2 digits of precision
               }
           },
       },
@@ -89,7 +89,7 @@ chartpanel.prototype.init_chart = function() {
           tooltip: {
             headerFormat: "",
             pointFormatter: function() {
-              return this.y+"m, "+this.x/60000+"min, "+this.value.toExponential(1); // 2 digits of precision
+              return this.y+"m, "+this.x/60000+"min, "+this.value.toExponential(2); // 2 digits of precision
             },
           },
           // tooltip: {
