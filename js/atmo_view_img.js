@@ -148,6 +148,7 @@ function toggle_view_panel(toggle_id) {
   var cb = document.getElementById(toggle_id+'_img_checkbox');
   cb.checked=panel_exists(toggle_id);
   cb.blur();
+  Cookies.set('img',panels);
 }
 
 function init_img_view() {

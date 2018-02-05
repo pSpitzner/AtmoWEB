@@ -211,14 +211,17 @@
 if (!$src_is_valid) exit;
 ?>
 
+<!-- array of active panels as cookies, load this after jquery-->
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
 <!-- need to set this variable, to call the right getter from javascript :/ -->
 <script>var src_arg = "<?php Print($src_arg); ?>";</script>
 <script src="./js/atmo_view_img.js"></script>
 <script>
   init_img_view();
-  <?php
-   if (count($imagesubdirs)>0) echo "toggle_view_panel(\"".$imagesubdirs[0]."\");";
-  ?>
+  var img_cookie_list = Cookies.getJSON('img');
+  console.log("img from cookies: "+img_cookie_list);
+  for (const i in img_cookie_list) {toggle_view_panel(img_cookie_list[i]);}
 </script>
 
 <!-- highchart -->
@@ -230,7 +233,11 @@ if (!$src_is_valid) exit;
 <script src="./js/atmo_view_highchart.js"></script>
 <!-- <script src="./js/atmo_view_ts.js"></script> -->
 <script>
-// toggle_chart_panel("VP_ql", "vp");
-// toggle_chart_panel("XZ_int_rho_c", "ts");
+	var vp_cookie_list = Cookies.getJSON('vp');
+  var ts_cookie_list = Cookies.getJSON('ts');
+	console.log("vp from cookies: "+vp_cookie_list);
+  console.log("ts from cookies: "+ts_cookie_list);
+  for (const i in vp_cookie_list) {toggle_chart_panel(vp_cookie_list[i], 'vp');}
+ 	for (const i in ts_cookie_list) {toggle_chart_panel(ts_cookie_list[i], 'ts');}
 </script>
 

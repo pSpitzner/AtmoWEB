@@ -295,5 +295,6 @@ function toggle_chart_panel(toggle_id, type) {
   var cb = document.getElementById(toggle_id+'_'+type+'_checkbox');
   cb.checked=chart_panel_exists(toggle_id, type);
   cb.blur();
+  Cookies.set(type,panel_lists[type]);
 }
 
