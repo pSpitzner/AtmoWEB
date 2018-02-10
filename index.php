@@ -91,14 +91,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <div class="btn-group navbar-btn navbar-padr">
+        <button id="button_refresh" type="button" class="btn btn-default" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+        <button id="button_play" class="btn btn-default" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+        <button class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge">0</span></button>
+      </div>
       <a class="navbar-brand hidden-xs" href="">
         <?php echo $interface_title;?>
       </a>
-      <div class="btn-group navbar-btn navbar-padr">
-        <button id="button_refresh" class="btn btn-default" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-        <button id="button_play" class="btn btn-default" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></button>
-        <button class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge">0</span></button>
-      </div>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -210,7 +210,7 @@
 <script src="./js/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="./js/bootstrap.min.js"></script>
-<script src="./js/docs.min.js"></script>
+<!-- <script src="./js/docs.min.js"></script> -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="./js/ie10-viewport-bug-workaround.js"></script>
 

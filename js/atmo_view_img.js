@@ -22,14 +22,13 @@ $(window).load(function () {
     $('#navbar-stretcher').css('padding-top', parseInt($('#main-navbar').css("height"))+10);
 });
 
-window.addEventListener('load', function(){ // on page load
-  document.getElementById("contentarea").addEventListener("touchstart", touchStart, false);
-	document.getElementById("contentarea").addEventListener("touchmove", touchMove, false);
-	document.getElementById("contentarea").addEventListener("touchend", touchEnd, false);
-	document.getElementById("contentarea").addEventListener("touchcancel", touchCancel, false);
-	document.getElementById("contentarea").addEventListener("touchforcechange", touchForceChange, false);
-}, false)
-
+// window.addEventListener('load', function(){ // on page load
+//   document.getElementById("contentarea").addEventListener("touchstart", touchStart, false);
+// 	document.getElementById("contentarea").addEventListener("touchmove", touchMove, false);
+// 	document.getElementById("contentarea").addEventListener("touchend", touchEnd, false);
+// 	document.getElementById("contentarea").addEventListener("touchcancel", touchCancel, false);
+// 	document.getElementById("contentarea").addEventListener("touchforcechange", touchForceChange, false);
+// }, false)
 
 
 var panels = new Array(); // contains toggle_ids, not panel_ids
