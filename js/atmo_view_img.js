@@ -20,7 +20,6 @@ $(window).resize(function () {
 
 $(window).load(function () {
     $('#navbar-stretcher').css('padding-top', parseInt($('#main-navbar').css("height"))+10);
-    alert($('#main-navbar').css("height"));
 });
 
 window.addEventListener('load', function(){ // on page load
