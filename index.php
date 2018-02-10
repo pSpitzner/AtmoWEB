@@ -80,7 +80,8 @@
 
 ?>
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" id="main-navbar">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -90,21 +91,26 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="">
+      <a class="navbar-brand hidden-xs" href="">
         <?php echo $interface_title;?>
       </a>
+      <div class="btn-group navbar-btn navbar-padr">
+        <button id="button_refresh" class="btn btn-default" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+        <button id="button_play" class="btn btn-default" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></button>
+        <button class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge">0</span></button>
+      </div>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <!-- controls -->
     <div class="collapse navbar-collapse" id="navbar_collapse_content">
-        <ul class="nav navbar-nav navbar-right">
+				<!-- <ul class="nav navbar-nav navbar-right">
           <div class="btn-group navbar-btn navbar-padr">
             <button id="button_refresh" class="btn btn-default" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
             <button id="button_play" class="btn btn-default" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></button>
             <button class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge">0</span></button>
           </div>
-        </ul>
+        </ul> -->
 
         <!-- input src -->
         <ul class="nav navbar-nav navbar-right">
@@ -174,7 +180,8 @@
 </nav>
 
 <!-- main -->
-<div class="container-fluid half-padding">
+<div class="container-fluid half-padding vfill" id="contentarea">
+	<div id="navbar-stretcher"></div>
 
   <div class="col-md-12">
     <div class="row" id="table_view_images">
@@ -195,6 +202,7 @@
     </div>
   </div>
 </div>
+</body>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

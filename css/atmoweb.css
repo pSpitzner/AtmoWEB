@@ -1,6 +1,8 @@
-/*fixed navbar covers top conent so set initial height and add a javascript snippet to adjust height on load and resize*/
-body {
-  padding-top: 60px;
+.vfill{
+	/*lets us capture touch events from main content area*/
+	min-height: 100vh;
+	height: 100%;
+	z-index:0;
 }
 .half-padding{
   padding-left:7px ! important;
