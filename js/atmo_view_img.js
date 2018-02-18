@@ -63,6 +63,7 @@ function set_frame(i) {
 
 function next_frame() {
   set_frame(frame_index+1);
+  // console.log("+");
 }
 
 function back_frame() {
@@ -201,30 +202,88 @@ function keyhandler(keyEv) {
 
 document.onkeydown = keyhandler;
 
+var startx = 0;
+var starty = 0;
+var startt = 0;
+
 window.addEventListener('load', function(){ // on page load
-  var startx = 0;
-  var starty = 0;
   var contentarea = document.getElementById("contentarea");
+  //playhandle = setInterval(next_frame,1000);
   contentarea.addEventListener("touchstart", touchStart, false);
-  // contentarea.addEventListener("touchmove", touchMove, false);
+  contentarea.addEventListener("touchmove", touchMove, false);
   contentarea.addEventListener("touchend", touchEnd, false);
   // contentarea.addEventListener("touchcancel", touchCancel, false);
   // contentarea.addEventListener("touchforcechange", touchForceChange, false);
 }, false)
 
+var frame_repeat_interval = 0;
+var frame_repeat_bool = false;
+var frame_repeat_handle;
+
+function set_frame_repeat_interval(new_interval) {
+	if (new_interval == frame_repeat_interval) return;
+	else {
+		frame_repeat_interval = new_interval;
+		frame_repeat_bool = true;
+	}
+}
+
+function frame_repeat() {
+	// console.log(frame_repeat_interval+" <- "+new_interval);
+	if (frame_repeat_bool == false || Math.abs(frame_repeat_interval) > 1000) {
+		var swap = frame_repeat_handle;
+		frame_repeat_handle = setTimeout(frame_repeat, 250);
+		clearTimeout(swap);
+		return;
+	}
+	else if (frame_repeat_interval>0) next_frame();
+	else if (frame_repeat_interval<0) back_frame();
+	var swap = frame_repeat_handle;
+	frame_repeat_handle = setTimeout(frame_repeat, Math.abs(frame_repeat_interval));
+	clearTimeout(swap);
+}
+
 function touchStart(e) {
   var touchobj = e.changedTouches[0];
+  startt = new Date().getTime();
   startx = parseInt(touchobj.clientX);
-  // e.preventDefault();
+
+  frame_repeat();
+  set_frame_repeat_interval(800);
+}
+
+function touchMove(e) {
+  var touchobj = e.changedTouches[0];
+  var nowx = parseInt(touchobj.clientX);
+  var target_interval = 8000/(nowx-startx);
+  if (Math.abs(target_interval)<800) set_frame_repeat_interval(target_interval);
 }
 
 function touchEnd(e) {
+console.log("end");
   var touchobj = e.changedTouches[0];
-  // alert(contentarea.offsetWidth);
-  if (parseInt(touchobj.clientX) > contentarea.offsetWidth/2.0) {
-    next_frame();
-  } else {
-    back_frame();
-  }
-  // e.preventDefault();
+
+  frame_repeat_interval = 0;
+  frame_repeat_bool = false;
+  clearTimeout(frame_repeat_handle);
+
+  now = new Date().getTime()
+  if (now - startt < 500) {
+  	if (parseInt(touchobj.clientX) > contentarea.offsetWidth/2.0) next_frame();
+		else back_frame();
+	}
+
+  disableDoubleTap(e);
+}
+
+function disableDoubleTap(e) {
+  var t2 = e.timeStamp;
+  var t1 = e.currentTarget.dataset.lastTouch || t2;
+  var dt = t2 - t1;
+  var fingers = e.touches.length;
+  e.currentTarget.dataset.lastTouch = t2;
+
+  if (!dt || dt > 500 || fingers > 1) return;
+
+  e.preventDefault();
 }

@@ -2,4 +2,5 @@
 php/config.php
 .htaccess
 .htpasswd
+*.log
 data
