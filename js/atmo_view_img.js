@@ -26,7 +26,7 @@ $(window).load(function () {
 var panels = new Array(); // contains toggle_ids, not panel_ids
 var upnext = new Array();
 var upback = new Array();
-var frame_index=-1;
+var frame_index=0;
 var last_frame=-1;
 var playing=0;
 var stay_on_last_frame=false;
@@ -140,7 +140,7 @@ function toggle_view_panel(toggle_id) {
 
     panel.id = panel_id;
     panel.className = 'col-sm-6 col-lg-4 half-padding';
-    panel.innerHTML = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+toggle_id+'</h3></div><img src="'+src_arg+'img/00001.png" id="'+image_id+'" alt="img" class="img-responsive panel-body-img" width="100%"></div>';
+    panel.innerHTML = '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">'+toggle_id+'</h3></div><img id="'+image_id+'" alt="img" class="img-responsive panel-body-img" width="100%"></div>';
     var tabview = document.getElementById('table_view_images');
     tabview.appendChild(panel);
     set_source(toggle_id);
@@ -156,7 +156,6 @@ function toggle_view_panel(toggle_id) {
 function init_img_view() {
   setInterval("render()",100);
   update_last_frame_form_query();
-  set_frame(-1);
   // manually get last frame
   jQuery.get("./php/provide_img_index.php?src="+src_arg).done(function( data ) {
     last_frame=Number(data);
@@ -243,32 +242,51 @@ function frame_repeat() {
 	clearTimeout(swap);
 }
 
+var touchlong_handle;
+function touchLong(e) {
+	frame_repeat();
+  if (startx > contentarea.offsetWidth/2.0) set_frame_repeat_interval(200);
+  else set_frame_repeat_interval(-200);
+  document.getElementById("button_counter").className="btn btn-default disabled changing";
+  e.preventDefault();
+}
+
 function touchStart(e) {
   var touchobj = e.changedTouches[0];
   startt = new Date().getTime();
   startx = parseInt(touchobj.clientX);
 
-  frame_repeat();
-  set_frame_repeat_interval(800);
+	touchlong_handle = setTimeout(touchLong, 400, e);
 }
 
 function touchMove(e) {
   var touchobj = e.changedTouches[0];
   var nowx = parseInt(touchobj.clientX);
-  var target_interval = 8000/(nowx-startx);
-  if (Math.abs(target_interval)<800) set_frame_repeat_interval(target_interval);
+  var nowt = new Date().getTime();
+  if (nowt - startt < 200 || frame_repeat_bool == false) {
+  	clearTimeout(touchlong_handle);
+  	frame_repeat_bool= false;
+  	return;
+  } else {
+  	var target_interval = 8000/(nowx-startx);
+  	if (Math.abs(target_interval)<200) set_frame_repeat_interval(target_interval);
+  	e.preventDefault();
+  }
 }
 
 function touchEnd(e) {
-console.log("end");
+// console.log("end");
   var touchobj = e.changedTouches[0];
+
+  clearTimeout(touchlong_handle);
 
   frame_repeat_interval = 0;
   frame_repeat_bool = false;
   clearTimeout(frame_repeat_handle);
+  document.getElementById("button_counter").className="btn btn-default disabled";
 
-  now = new Date().getTime()
-  if (now - startt < 500) {
+  var nowt = new Date().getTime()
+  if (nowt - startt < 100) {
   	if (parseInt(touchobj.clientX) > contentarea.offsetWidth/2.0) next_frame();
 		else back_frame();
 	}

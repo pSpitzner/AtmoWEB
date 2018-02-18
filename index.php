@@ -94,7 +94,7 @@
       <div class="btn-group navbar-btn navbar-padr">
         <button id="button_refresh" type="button" class="btn btn-default" onclick="toggle_stay_on_last();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
         <button id="button_play" class="btn btn-default" onclick="play();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
-        <button class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge">0</span></button>
+        <button id="button_counter" class="btn btn-default disabled" type="button">Count: <span id="framecounter" class="badge badge-dark">0</span></button>
       </div>
       <a class="navbar-brand hidden-xs" href="">
         <?php echo $interface_title;?>

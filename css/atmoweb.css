@@ -4,6 +4,21 @@
 	height: 100%;
 	z-index:0;
 }
+body {
+	/*prevent long-press on images and text*/
+	-webkit-touch-callout: none !important;
+	-webkit-user-select: none !important;
+}
+.btn.changing, .btn[changing], fieldset[changing] .btn {
+    cursor: not-allowed;
+    filter: alpha(opacity=100);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+     opacity: 100;
+}
+.badge-dark {
+	background-color: #333333 !important;
+}
 .half-padding{
   padding-left:7px ! important;
   padding-right:7px ! important;
@@ -13,6 +28,7 @@
   border-bottom-right-radius: 2.5px;
   border-bottom-left-radius: 2.5px;
   image-rendering: pixelated;
+  pointer-events:none; /*prevent long press to save*/
 }
 .panel-body-vp {
   padding: 3px;
